@@ -8,6 +8,11 @@ public class Place {
     private String name;
     private String link;
 
+    public Place(String name, String link) {
+        this.name = name;
+        this.link = link;
+    }
+
     public String getLink() {
         return link;
     }

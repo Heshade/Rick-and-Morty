@@ -23,6 +23,41 @@ public class Character {
     private String url;
     private String created;
 
+    public static Character[] ITEMS = {
+            new Character(1,"PEPE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/1.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(2,"PEE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/2.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(3,"PEPE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/3.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(4,"PEE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/4.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(5,"PEPE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/1.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(6,"PEE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/2.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(7,"PEPE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/3.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(8,"PEE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/4.jpeg", new ArrayList<String>(), "as", "add")
+    };
+
+    public static Character getItem(int id) {
+        for (Character item : ITEMS) {
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public Character(int id, String name, allGenders gender, String species, String type, allStatus status, Place origin, Place location, String image, ArrayList<String> episode, String url, String created) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.species = species;
+        this.type = type;
+        this.status = status;
+        this.origin = origin;
+        this.location = location;
+        this.image = image;
+        this.episode = episode;
+        this.url = url;
+        this.created = created;
+    }
+
     public int getId() {
         return id;
     }

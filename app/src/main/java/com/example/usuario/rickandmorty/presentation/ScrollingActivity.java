@@ -12,9 +12,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.usuario.rickandmorty.R;
+import com.example.usuario.rickandmorty.presentation.adapters.adaptadorElement;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -28,6 +30,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.R.attr.key;
+
 public class ScrollingActivity extends AppCompatActivity {
 
 
@@ -35,7 +39,9 @@ public class ScrollingActivity extends AppCompatActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+    private GridView gridView;
+    private adaptadorElement adaptador;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +49,34 @@ public class ScrollingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        gridView = (GridView) findViewById(R.id.grid);
+        adaptador = new adaptadorElement(this);
+        gridView.setAdapter(adaptador);
+
+        /*
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL githubEndpoint = new URL("https://rickandmortyapi.com/api/");
+                    URL url = new URL("https://rickandmortyapi.com/api/");
                     HttpsURLConnection myConnection =
-                            (HttpsURLConnection) githubEndpoint.openConnection();
+                            (HttpsURLConnection) url.openConnection();
                     if (myConnection.getResponseCode() == 200) {
                         InputStream responseBody = myConnection.getInputStream();
                         InputStreamReader responseBodyReader =
                                 new InputStreamReader(responseBody, "UTF-8");
                         JsonReader jsonReader = new JsonReader(responseBodyReader);
-                        
+                        jsonReader.beginObject();
+                        while(jsonReader.hasNext()) {
+                            String name = jsonReader.nextName();
+                            if (name.equals("characters")) {
+                                readCharacters(jsonReader.nextString());
+                            } else if (name.equals("locations")) {
+                                readLocations(jsonReader.nextString());
+                            } else if (name.equals("episodes")) {
+                                readEpisodes(jsonReader.nextString());
+                            }
+                        }
 
                     } else {
                         Toast toast1 = Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT);
@@ -68,18 +89,44 @@ public class ScrollingActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        });
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+            private void readEpisodes(String s) {
+            }
+
+            private void readLocations(String s) {
+            }
+
+            private void readCharacters(String s) throws IOException {
+                String next = "primera";
+                URL url = new URL("https://rickandmortyapi.com/api/character/");
+                HttpsURLConnection myConnection =
+                        (HttpsURLConnection) url.openConnection();
+                if (myConnection.getResponseCode() == 200) {
+                    InputStream responseBody = myConnection.getInputStream();
+                    InputStreamReader responseBodyReader =
+                            new InputStreamReader(responseBody, "UTF-8");
+                    JsonReader jsonReader = new JsonReader(responseBodyReader);
+                    jsonReader.beginObject();
+                    while(jsonReader.hasNext()) {
+                        String name = jsonReader.nextName();
+                        if (name.equals("info")) {
+                            readCharacters(jsonReader.nextString());
+                        } else if (name.equals("locations")) {
+                            readLocations(jsonReader.nextString());
+                        } else if (name.equals("episodes")) {
+                            readEpisodes(jsonReader.nextString());
+                        }
+                    }
+
+                } else {
+                    Toast toast1 = Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT);
+                    toast1.setGravity(Gravity.CENTER, , );
+                    toast1.show();
+                }
+
             }
         });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        */
     }
 
     @Override
@@ -103,39 +150,5 @@ public class ScrollingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Scrolling Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }
