@@ -24,10 +24,10 @@ public class Character {
     private String created;
 
     public static Character[] ITEMS = {
-            new Character(1,"PEPE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/1.jpeg", new ArrayList<String>(), "as", "add"),
-            new Character(2,"PEE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/2.jpeg", new ArrayList<String>(), "as", "add"),
-            new Character(3,"PEPE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/3.jpeg", new ArrayList<String>(), "as", "add"),
-            new Character(4,"PEE",allGenders.Female, "es", "as", allStatus.Alive, new Place("p","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/4.jpeg", new ArrayList<String>(), "as", "add")
+            new Character(1,"Doctor",allGenders.Female, "human", "petao", allStatus.Alive, new Place("Casa","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/1.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(2,"Nen",allGenders.Female, "human", "petao", allStatus.Alive, new Place("Casa","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/2.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(3,"Mare",allGenders.Female, "human", "petao", allStatus.Alive, new Place("Casa","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/3.jpeg", new ArrayList<String>(), "as", "add"),
+            new Character(4,"Nena",allGenders.Female, "human", "petao", allStatus.Alive, new Place("Casa","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/4.jpeg", new ArrayList<String>(), "as", "add")
     };
 
     public static Character getItem(int id) {
@@ -66,6 +66,19 @@ public class Character {
         return gender;
     }
 
+    public String getGenderString() {
+        switch (gender) {
+            case Female:
+                return "Female";
+            case Male:
+                return "Male";
+            case Genderless:
+                return "Male";
+            default:
+                return "unknown";
+        }
+    }
+
     public String getSpecies() {
         return species;
     }
@@ -76,6 +89,17 @@ public class Character {
 
     public allStatus getStatus() {
         return status;
+    }
+
+    public String getStatusString() {
+        switch (status) {
+            case Alive:
+                return "Alive";
+            case Dead:
+                return "Dead";
+            default:
+                return "unknown";
+        }
     }
 
     public Place getOrigin() {

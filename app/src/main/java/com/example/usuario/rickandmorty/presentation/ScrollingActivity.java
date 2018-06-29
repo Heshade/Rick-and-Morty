@@ -1,10 +1,15 @@
 package com.example.usuario.rickandmorty.presentation;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
@@ -12,10 +17,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.usuario.rickandmorty.R;
+import com.example.usuario.rickandmorty.domain.Character;
 import com.example.usuario.rickandmorty.presentation.adapters.adaptadorElement;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -32,7 +39,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import static android.R.attr.key;
 
-public class ScrollingActivity extends AppCompatActivity {
+public class ScrollingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
 
     /**
@@ -52,6 +59,8 @@ public class ScrollingActivity extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.grid);
         adaptador = new adaptadorElement(this);
         gridView.setAdapter(adaptador);
+        gridView.setOnItemClickListener(this);
+
 
         /*
         AsyncTask.execute(new Runnable() {
@@ -151,4 +160,11 @@ public class ScrollingActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Character item = (Character) parent.getItemAtPosition(position);
+        Intent intent = new Intent(this, ActivityDetail.class);
+        intent.putExtra(ActivityDetail.EXTRA_PARAM_ID, item.getId());
+        startActivity(intent);
+    }
 }
