@@ -2,6 +2,7 @@ package com.example.usuario.rickandmorty.presentation;
 
 import android.app.VoiceInteractor;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +47,7 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
 
     private GridView gridView;
     private adaptadorElement adaptador;
+    public static final String PREFS_NAME = "MyPrefsFile";
 
 
     @Override
@@ -55,6 +57,14 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         gridView = (GridView) findViewById(R.id.grid);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        int numberFavourites = settings.getInt("numFav", 0);
+        if (Character.first) {
+            for (int i = 0; i < numberFavourites; i++) {
+                Character.favourites.add(settings.getInt(String.valueOf(i), 1));
+            }
+            Character.first = false;
+        }
 
         for (int i = 1; i <= 25; ++i) {
             String newURL = "https://rickandmortyapi.com/api/character/?page=" + i;
@@ -144,14 +154,15 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.reset_favourites) {
             Character.favourites.clear();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("numFav",0);
+            editor.apply();
             Intent intent = new Intent(this, ScrollingActivity.class);
             startActivity(intent);
         }
@@ -161,6 +172,14 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.putInt("numFav",Character.favourites.size());
+        for (int i = 0; i < Character.favourites.size(); i++) {
+            editor.putInt(String.valueOf(i), Character.favourites.get(i));
+        }
+        editor.apply();
         Character item = (Character) parent.getItemAtPosition(position);
         Intent intent = new Intent(this, ActivityDetail.class);
         intent.putExtra(ActivityDetail.EXTRA_PARAM_ID, item.getId());
@@ -171,7 +190,7 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
     @Override
     public void onBackPressed() {
         if (exit) {
-            finish(); // finish activity
+            finish();
         } else {
             Toast.makeText(this, "Press Back again to Exit.",
                     Toast.LENGTH_SHORT).show();
@@ -186,4 +205,19 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
         }
 
     }
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("numFav",Character.favourites.size());
+        for (int i = 0; i < Character.favourites.size(); i++) {
+            editor.putInt(String.valueOf(i), Character.favourites.get(i));
+        }
+        editor.apply();
+    }
+
 }

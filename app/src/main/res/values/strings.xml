@@ -14,4 +14,5 @@
     <string name="id">Id:</string>
     <string name="name">Name:</string>
     <string name="reset_favourites">Reset Favourites</string>
+    <string name="transition_image">Transition Image</string>
 </resources>

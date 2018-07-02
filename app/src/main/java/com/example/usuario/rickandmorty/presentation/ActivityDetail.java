@@ -1,6 +1,7 @@
 package com.example.usuario.rickandmorty.presentation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -31,6 +32,7 @@ public class ActivityDetail extends AppCompatActivity {
     private TextView gender;
     private TextView origin;
     private TextView lastLoc;
+    public static final String PREFS_NAME = "MyPrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
