@@ -54,7 +54,7 @@ public class ActivityDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Character.favourites.contains(itemDetailed.getId())) {
-                    Character.favourites.remove(Character.favourites.indexOf(itemDetailed.getId()));
+                    if (Character.favourites.indexOf(itemDetailed.getId()) != -1) Character.favourites.remove(Character.favourites.indexOf(itemDetailed.getId()));
                     favourite.setImageResource(R.mipmap.favourite_non_selected);
                 } else {
                     favourite.setImageResource(R.mipmap.favourite);
@@ -86,10 +86,8 @@ public class ActivityDetail extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, ScrollingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
+        finish();
     }
 
 

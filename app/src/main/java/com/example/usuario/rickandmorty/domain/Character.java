@@ -24,7 +24,7 @@ public class Character {
 
     public static ArrayList<Character> ITEMS = new ArrayList<>();
     public static ArrayList<Integer> favourites = new ArrayList<>();
-    public static boolean first;
+    public static boolean first = true;
     public static Character getItem(int id) {
         for (Character item : ITEMS) {
             if (item.getId() == id) {

@@ -63,81 +63,82 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
             for (int i = 0; i < numberFavourites; i++) {
                 Character.favourites.add(settings.getInt(String.valueOf(i), 1));
             }
+            for (int i = 1; i <= 25; ++i) {
+                String newURL = "https://rickandmortyapi.com/api/character/?page=" + i;
+                RequestQueue requestQueue2 = Volley.newRequestQueue(this);
+                JsonObjectRequest objectRequest2 = new JsonObjectRequest(
+                        Request.Method.GET,
+                        newURL,
+                        null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray json = response.getJSONArray("results");
+                                    for (int i = 0; i < json.length(); i++) {
+                                        JSONObject character = json.getJSONObject(i);
+                                        String name = character.getString("name");
+                                        String image = character.getString("image");
+                                        int id = character.getInt("id");
+                                        String species = character.getString("species");
+                                        String gender = character.getString("gender");
+                                        String status = character.getString("status");
+                                        String type = character.getString("type");
+                                        String url = character.getString("url");
+                                        String created = character.getString("created");
+                                        JSONObject location = character.getJSONObject("location");
+                                        String loc = location.getString("name");
+                                        JSONObject origin = character.getJSONObject("origin");
+                                        String org = origin.getString("name");
+                                        Character.allGenders gen;
+                                        switch (gender) {
+                                            case "Female":
+                                                gen = Character.allGenders.Female;
+                                                break;
+                                            case "Male":
+                                                gen = Character.allGenders.Male;
+                                                break;
+                                            case "Genderless":
+                                                gen = Character.allGenders.Genderless;
+                                                break;
+                                            default:
+                                                gen = Character.allGenders.unknown;
+                                                break;
+                                        }
+                                        Character.allStatus stat;
+                                        switch (status) {
+                                            case "Alive":
+                                                stat = Character.allStatus.Alive;
+                                                break;
+                                            case "Dead":
+                                                stat = Character.allStatus.Dead;
+                                                break;
+                                            default:
+                                                stat = Character.allStatus.unknown;
+                                                break;
+                                        }
+                                        Character.ITEMS.add(new Character(id, name, gen, species, type, stat, org, loc, image, url, created));
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Character.ITEMS.add(new Character(3, "name", Character.allGenders.Female, "species", "type", Character.allStatus.Alive, "origin", "location", "https://rickandmortyapi.com/api/character/avatar/3.jpeg", "url", "created"));
+                            }
+                        }
+                );
+                requestQueue2.add(objectRequest2);
+            }
             Character.first = false;
         }
 
-        for (int i = 1; i <= 25; ++i) {
-            String newURL = "https://rickandmortyapi.com/api/character/?page=" + i;
-            RequestQueue requestQueue2 = Volley.newRequestQueue(this);
-            JsonObjectRequest objectRequest2 = new JsonObjectRequest(
-                    Request.Method.GET,
-                    newURL,
-                    null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                JSONArray json = response.getJSONArray("results");
-                                for (int i = 0; i < json.length(); i++) {
-                                    JSONObject character = json.getJSONObject(i);
-                                    String name = character.getString("name");
-                                    String image = character.getString("image");
-                                    int id = character.getInt("id");
-                                    String species = character.getString("species");
-                                    String gender = character.getString("gender");
-                                    String status = character.getString("status");
-                                    String type = character.getString("type");
-                                    String url = character.getString("url");
-                                    String created = character.getString("created");
-                                    JSONObject location = character.getJSONObject("location");
-                                    String loc = location.getString("name");
-                                    JSONObject origin = character.getJSONObject("origin");
-                                    String org = origin.getString("name");
-                                    Character.allGenders gen;
-                                    switch (gender) {
-                                        case "Female":
-                                            gen = Character.allGenders.Female;
-                                            break;
-                                        case "Male":
-                                            gen = Character.allGenders.Male;
-                                            break;
-                                        case "Genderless":
-                                            gen = Character.allGenders.Genderless;
-                                            break;
-                                        default:
-                                            gen = Character.allGenders.unknown;
-                                            break;
-                                    }
-                                    Character.allStatus stat;
-                                    switch (status) {
-                                        case "Alive":
-                                            stat = Character.allStatus.Alive;
-                                            break;
-                                        case "Dead":
-                                            stat = Character.allStatus.Dead;
-                                            break;
-                                        default:
-                                            stat = Character.allStatus.unknown;
-                                            break;
-                                    }
-                                    Character.ITEMS.add(new Character(id, name, gen, species, type, stat, org, loc, image, url, created));
-                                }
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Character.ITEMS.add(new Character(3, "name", Character.allGenders.Female, "species", "type", Character.allStatus.Alive, "origin", "location", "https://rickandmortyapi.com/api/character/avatar/3.jpeg", "url", "created"));
-                        }
-                    }
-            );
-        requestQueue2.add(objectRequest2);
-        }
 
         adaptador = new adaptadorElement(this);
         gridView.setAdapter(adaptador);
@@ -165,6 +166,7 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
             editor.apply();
             Intent intent = new Intent(this, ScrollingActivity.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -184,25 +186,13 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
         Intent intent = new Intent(this, ActivityDetail.class);
         intent.putExtra(ActivityDetail.EXTRA_PARAM_ID, item.getId());
         startActivity(intent);
+        finish();
     }
 
     private Boolean exit = false;
     @Override
     public void onBackPressed() {
-        if (exit) {
-            finish();
-        } else {
-            Toast.makeText(this, "Press Back again to Exit.",
-                    Toast.LENGTH_SHORT).show();
-            exit = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    exit = false;
-                }
-            }, 3 * 1000);
-
-        }
+        finish();
 
     }
     @Override
