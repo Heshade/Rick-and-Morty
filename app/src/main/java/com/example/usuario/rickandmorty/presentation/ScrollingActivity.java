@@ -26,21 +26,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.usuario.rickandmorty.R;
 import com.example.usuario.rickandmorty.domain.Character;
 import com.example.usuario.rickandmorty.presentation.adapters.adaptadorElement;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class ScrollingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -164,6 +153,10 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("numFav",0);
             editor.apply();
+            Intent intent = new Intent(this, ScrollingActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.charge_characters) {
             Intent intent = new Intent(this, ScrollingActivity.class);
             startActivity(intent);
             finish();

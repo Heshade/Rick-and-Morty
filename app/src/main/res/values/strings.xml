@@ -15,4 +15,5 @@
     <string name="name">Name:</string>
     <string name="reset_favourites">Reset Favourites</string>
     <string name="transition_image">Transition Image</string>
+    <string name="charge_characters">Charge Characters</string>
 </resources>
