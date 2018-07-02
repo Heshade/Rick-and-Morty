@@ -48,9 +48,12 @@ public class adaptadorElement extends BaseAdapter{
         }
 
         ImageView imageCharacter = (ImageView) view.findViewById(R.id.imagen_coche);
+        ImageView favourite = (ImageView) view.findViewById(R.id.favourite);
         TextView nameCharacter = (TextView) view.findViewById(R.id.nombre_coche);
         final Character item = getItem(position);
         Picasso.with(view.getContext()).load(item.getImage()).into(imageCharacter);
+        if (Character.favourites.contains(item.getId())) favourite.setImageResource(R.mipmap.favourite);
+        else favourite.setImageResource(R.mipmap.favourite_non_selected);
         nameCharacter.setText(item.getName());
         return view;
     }

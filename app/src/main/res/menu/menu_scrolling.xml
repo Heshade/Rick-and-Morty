@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.usuario.rickandmorty.presentation.ScrollingActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/reset_favourites"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/reset_favourites"
         app:showAsAction="never" />
 </menu>

@@ -13,6 +13,10 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/image_extended"
         android:layout_width="170dp"
@@ -20,8 +24,18 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:transitionName="@string/nombre_transicion_imagen">
-    </ImageView>
+        android:transitionName="@string/nombre_transicion_imagen"/>
+
+    <ImageView
+        android:id="@+id/favourite_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="100dp"
+        android:src="@mipmap/favourite_non_selected"/>
+    </FrameLayout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -30,7 +44,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="60dp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/name"/>
@@ -38,6 +52,8 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textAlignment="viewEnd"
+            android:layout_marginEnd="60dp"
             android:textSize="16sp"/>
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,7 +64,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="60dp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/id"/>
@@ -56,6 +72,8 @@
             android:id="@+id/id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textAlignment="viewEnd"
+            android:layout_marginEnd="60dp"
             android:textSize="16sp"/>
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -66,7 +84,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="60dp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/status"/>
@@ -74,6 +92,8 @@
             android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textAlignment="viewEnd"
+            android:layout_marginEnd="60dp"
             android:textSize="16sp"/>
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -84,13 +104,15 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="60dp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/species"/>
         <TextView
             android:id="@+id/species"
             android:layout_width="match_parent"
+            android:textAlignment="viewEnd"
+            android:layout_marginEnd="60dp"
             android:layout_height="match_parent"
             android:textSize="16sp"/>
     </LinearLayout>
@@ -102,7 +124,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="60dp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/gender"/>
@@ -110,6 +132,8 @@
             android:id="@+id/gender"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textAlignment="viewEnd"
+            android:layout_marginEnd="60dp"
             android:textSize="16sp"/>
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -120,7 +144,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="60dp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/origin"/>
@@ -128,6 +152,8 @@
             android:id="@+id/origin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textAlignment="viewEnd"
+            android:layout_marginEnd="60dp"
             android:textSize="16sp"/>
     </LinearLayout>
 
@@ -138,7 +164,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="60dp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/last_location"/>
@@ -146,6 +172,8 @@
             android:id="@+id/last_loc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textAlignment="viewEnd"
+            android:layout_marginEnd="60dp"
             android:textSize="16sp"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Rick and Morty</string>
 
-    <string name="titulo_actividad_detalle">Actividad De Detalle</string>
+    <string name="titulo_actividad_detalle">Character Details</string>
 
     <string name="nombre_transicion_imagen">imagen_compartida</string>
 
@@ -13,4 +13,5 @@
     <string name="status">Status:</string>
     <string name="id">Id:</string>
     <string name="name">Name:</string>
+    <string name="reset_favourites">Reset Favourites</string>
 </resources>

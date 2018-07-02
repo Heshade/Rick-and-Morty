@@ -23,7 +23,8 @@ public class Character {
     private String created;
 
     public static ArrayList<Character> ITEMS = new ArrayList<>();
-
+    public static ArrayList<Integer> favourites = new ArrayList<>();
+    public static int pages;
     public static Character getItem(int id) {
         for (Character item : ITEMS) {
             if (item.getId() == id) {

@@ -4,6 +4,7 @@ import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
@@ -36,6 +37,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -53,6 +55,7 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         gridView = (GridView) findViewById(R.id.grid);
+
         for (int i = 1; i <= 25; ++i) {
             String newURL = "https://rickandmortyapi.com/api/character/?page=" + i;
             RequestQueue requestQueue2 = Volley.newRequestQueue(this);
@@ -126,48 +129,6 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
         requestQueue2.add(objectRequest2);
         }
 
-               /* try {
-
-                    URL url = new URL("https://rickandmortyapi.com/api/character/");
-
-                    HttpURLConnection myConnection =
-                            (HttpURLConnection) url.openConnection();
-                    myConnection.setRequestMethod(REQUEST_METHOD);
-                    myConnection.setReadTimeout(READ_TIMEOUT);
-                    myConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-                    myConnection.connect();
-
-
-                        InputStreamReader streamReader = new
-                            InputStreamReader(myConnection.getInputStream());
-                        JsonReader jsonReader = new JsonReader(streamReader);
-                        jsonReader.beginObject();
-                    //Character.ITEMS.add(new Character(3, "name", Character.allGenders.Female, "species", "type", Character.allStatus.Alive, "origin", "location","https://rickandmortyapi.com/api/character/avatar/3.jpeg", "url", "created"));
-                        while(jsonReader.hasNext()) {
-                            //Character.ITEMS.add(new Character(2, "name", Character.allGenders.Female, "species", "type", Character.allStatus.Alive, "origin", "location","https://rickandmortyapi.com/api/character/avatar/4.jpeg", "url", "created"));
-                            String name = jsonReader.nextName();
-                            if (name.equals("results")) {
-
-                                jsonReader.beginArray();
-                                while(jsonReader.hasNext()) {
-                                    read(jsonReader);
-                                }
-                                jsonReader.endArray();
-                            } else {
-                                jsonReader.skipValue();
-                            }
-                        }
-                        jsonReader.endObject();
-                    myConnection.disconnect();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-        */
-
         adaptador = new adaptadorElement(this);
         gridView.setAdapter(adaptador);
         gridView.setOnItemClickListener(this);
@@ -189,8 +150,10 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.reset_favourites) {
+            Character.favourites.clear();
+            Intent intent = new Intent(this, ScrollingActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -202,5 +165,25 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
         Intent intent = new Intent(this, ActivityDetail.class);
         intent.putExtra(ActivityDetail.EXTRA_PARAM_ID, item.getId());
         startActivity(intent);
+    }
+
+    private Boolean exit = false;
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
+
     }
 }
