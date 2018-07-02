@@ -1,0 +1,2 @@
+# Rick and Morty
+Rick and Morty is an android app that uses the resources that provides https://rickandmortyapi.com to create a list of characters. The user will be able to click on them, when doing so he will be given more information about that particular character. The user will also have the possibility of choosing favourite characters by clicking on the heart icon in the Character detail screen.
