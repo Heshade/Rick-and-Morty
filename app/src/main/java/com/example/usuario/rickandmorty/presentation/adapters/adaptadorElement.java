@@ -26,12 +26,12 @@ public class adaptadorElement extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return Character.ITEMS.length;
+        return Character.ITEMS.size();
     }
 
     @Override
     public Character getItem(int position) {
-        return Character.ITEMS[position];
+        return Character.ITEMS.get(position);
     }
 
     @Override

@@ -57,8 +57,8 @@ public class ActivityDetail extends AppCompatActivity {
         status.setText(itemDetailed.getStatusString());
         species.setText(itemDetailed.getSpecies());
         gender.setText(itemDetailed.getGenderString());
-        origin.setText(itemDetailed.getOrigin().getName());
-        lastLoc.setText(itemDetailed.getLocation().getName());
+        origin.setText(itemDetailed.getOrigin());
+        lastLoc.setText(itemDetailed.getLocation());
     }
 
     private void useToolbar() {

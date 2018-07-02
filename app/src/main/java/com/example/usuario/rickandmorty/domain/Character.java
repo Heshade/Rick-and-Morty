@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Character {
     public enum allGenders { Female, Male, Genderless, unknown};
-    private enum allStatus { Alive, Dead, unknown };
+    public enum allStatus { Alive, Dead, unknown };
 
     private int id;
     private String name;
@@ -16,19 +16,13 @@ public class Character {
     private String species;
     private String type;
     private allStatus status;
-    private Place origin;
-    private Place location;
+    private String origin;
+    private String location;
     private String image;
-    private ArrayList<String> episode;
     private String url;
     private String created;
 
-    public static Character[] ITEMS = {
-            new Character(1,"Doctor",allGenders.Female, "human", "petao", allStatus.Alive, new Place("Casa","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/1.jpeg", new ArrayList<String>(), "as", "add"),
-            new Character(2,"Nen",allGenders.Female, "human", "petao", allStatus.Alive, new Place("Casa","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/2.jpeg", new ArrayList<String>(), "as", "add"),
-            new Character(3,"Mare",allGenders.Female, "human", "petao", allStatus.Alive, new Place("Casa","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/3.jpeg", new ArrayList<String>(), "as", "add"),
-            new Character(4,"Nena",allGenders.Female, "human", "petao", allStatus.Alive, new Place("Casa","d"), new Place("p","d"), "https://rickandmortyapi.com/api/character/avatar/4.jpeg", new ArrayList<String>(), "as", "add")
-    };
+    public static ArrayList<Character> ITEMS = new ArrayList<>();
 
     public static Character getItem(int id) {
         for (Character item : ITEMS) {
@@ -39,7 +33,7 @@ public class Character {
         return null;
     }
 
-    public Character(int id, String name, allGenders gender, String species, String type, allStatus status, Place origin, Place location, String image, ArrayList<String> episode, String url, String created) {
+    public Character(int id, String name, allGenders gender, String species, String type, allStatus status, String origin, String location, String image, String url, String created) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -49,7 +43,6 @@ public class Character {
         this.origin = origin;
         this.location = location;
         this.image = image;
-        this.episode = episode;
         this.url = url;
         this.created = created;
     }
@@ -102,7 +95,7 @@ public class Character {
         }
     }
 
-    public Place getOrigin() {
+    public String getOrigin() {
         return origin;
     }
 
@@ -110,9 +103,6 @@ public class Character {
         return image;
     }
 
-    public ArrayList<String> getEpisode() {
-        return episode;
-    }
 
     public String getUrl() {
         return url;
@@ -122,7 +112,7 @@ public class Character {
         return created;
     }
 
-    public Place getLocation() {
+    public String getLocation() {
         return location;
     }
 
@@ -150,11 +140,11 @@ public class Character {
         this.status = status;
     }
 
-    public void setOrigin(Place origin) {
+    public void setOrigin(String origin) {
         this.origin = origin;
     }
 
-    public void setLocation(Place location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -162,9 +152,6 @@ public class Character {
         this.image = image;
     }
 
-    public void setEpisode(ArrayList<String> episode) {
-        this.episode = episode;
-    }
 
     public void setUrl(String url) {
         this.url = url;

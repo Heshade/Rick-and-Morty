@@ -1,15 +1,9 @@
 package com.example.usuario.rickandmorty.presentation;
 
+import android.app.VoiceInteractor;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
@@ -21,31 +15,33 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.usuario.rickandmorty.R;
 import com.example.usuario.rickandmorty.domain.Character;
 import com.example.usuario.rickandmorty.presentation.adapters.adaptadorElement;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static android.R.attr.key;
-
 public class ScrollingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GridView gridView;
     private adaptadorElement adaptador;
 
@@ -57,86 +53,126 @@ public class ScrollingActivity extends AppCompatActivity implements AdapterView.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         gridView = (GridView) findViewById(R.id.grid);
-        adaptador = new adaptadorElement(this);
-        gridView.setAdapter(adaptador);
-        gridView.setOnItemClickListener(this);
+        for (int i = 1; i <= 25; ++i) {
+            String newURL = "https://rickandmortyapi.com/api/character/?page=" + i;
+            RequestQueue requestQueue2 = Volley.newRequestQueue(this);
+            JsonObjectRequest objectRequest2 = new JsonObjectRequest(
+                    Request.Method.GET,
+                    newURL,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                JSONArray json = response.getJSONArray("results");
+                                for (int i = 0; i < json.length(); i++) {
+                                    JSONObject character = json.getJSONObject(i);
+                                    String name = character.getString("name");
+                                    String image = character.getString("image");
+                                    int id = character.getInt("id");
+                                    String species = character.getString("species");
+                                    String gender = character.getString("gender");
+                                    String status = character.getString("status");
+                                    String type = character.getString("type");
+                                    String url = character.getString("url");
+                                    String created = character.getString("created");
+                                    JSONObject location = character.getJSONObject("location");
+                                    String loc = location.getString("name");
+                                    JSONObject origin = character.getJSONObject("origin");
+                                    String org = origin.getString("name");
+                                    Character.allGenders gen;
+                                    switch (gender) {
+                                        case "Female":
+                                            gen = Character.allGenders.Female;
+                                            break;
+                                        case "Male":
+                                            gen = Character.allGenders.Male;
+                                            break;
+                                        case "Genderless":
+                                            gen = Character.allGenders.Genderless;
+                                            break;
+                                        default:
+                                            gen = Character.allGenders.unknown;
+                                            break;
+                                    }
+                                    Character.allStatus stat;
+                                    switch (status) {
+                                        case "Alive":
+                                            stat = Character.allStatus.Alive;
+                                            break;
+                                        case "Dead":
+                                            stat = Character.allStatus.Dead;
+                                            break;
+                                        default:
+                                            stat = Character.allStatus.unknown;
+                                            break;
+                                    }
+                                    Character.ITEMS.add(new Character(id, name, gen, species, type, stat, org, loc, image, url, created));
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Character.ITEMS.add(new Character(3, "name", Character.allGenders.Female, "species", "type", Character.allStatus.Alive, "origin", "location", "https://rickandmortyapi.com/api/character/avatar/3.jpeg", "url", "created"));
+                        }
+                    }
+            );
+        requestQueue2.add(objectRequest2);
+        }
+
+               /* try {
+
+                    URL url = new URL("https://rickandmortyapi.com/api/character/");
+
+                    HttpURLConnection myConnection =
+                            (HttpURLConnection) url.openConnection();
+                    myConnection.setRequestMethod(REQUEST_METHOD);
+                    myConnection.setReadTimeout(READ_TIMEOUT);
+                    myConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+                    myConnection.connect();
 
 
-        /*
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL("https://rickandmortyapi.com/api/");
-                    HttpsURLConnection myConnection =
-                            (HttpsURLConnection) url.openConnection();
-                    if (myConnection.getResponseCode() == 200) {
-                        InputStream responseBody = myConnection.getInputStream();
-                        InputStreamReader responseBodyReader =
-                                new InputStreamReader(responseBody, "UTF-8");
-                        JsonReader jsonReader = new JsonReader(responseBodyReader);
+                        InputStreamReader streamReader = new
+                            InputStreamReader(myConnection.getInputStream());
+                        JsonReader jsonReader = new JsonReader(streamReader);
                         jsonReader.beginObject();
+                    //Character.ITEMS.add(new Character(3, "name", Character.allGenders.Female, "species", "type", Character.allStatus.Alive, "origin", "location","https://rickandmortyapi.com/api/character/avatar/3.jpeg", "url", "created"));
                         while(jsonReader.hasNext()) {
+                            //Character.ITEMS.add(new Character(2, "name", Character.allGenders.Female, "species", "type", Character.allStatus.Alive, "origin", "location","https://rickandmortyapi.com/api/character/avatar/4.jpeg", "url", "created"));
                             String name = jsonReader.nextName();
-                            if (name.equals("characters")) {
-                                readCharacters(jsonReader.nextString());
-                            } else if (name.equals("locations")) {
-                                readLocations(jsonReader.nextString());
-                            } else if (name.equals("episodes")) {
-                                readEpisodes(jsonReader.nextString());
+                            if (name.equals("results")) {
+
+                                jsonReader.beginArray();
+                                while(jsonReader.hasNext()) {
+                                    read(jsonReader);
+                                }
+                                jsonReader.endArray();
+                            } else {
+                                jsonReader.skipValue();
                             }
                         }
-
-                    } else {
-                        Toast toast1 = Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT);
-                        toast1.setGravity(Gravity.CENTER, , );
-                        toast1.show();
-                    }
+                        jsonReader.endObject();
+                    myConnection.disconnect();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
 
-            private void readEpisodes(String s) {
-            }
 
-            private void readLocations(String s) {
-            }
-
-            private void readCharacters(String s) throws IOException {
-                String next = "primera";
-                URL url = new URL("https://rickandmortyapi.com/api/character/");
-                HttpsURLConnection myConnection =
-                        (HttpsURLConnection) url.openConnection();
-                if (myConnection.getResponseCode() == 200) {
-                    InputStream responseBody = myConnection.getInputStream();
-                    InputStreamReader responseBodyReader =
-                            new InputStreamReader(responseBody, "UTF-8");
-                    JsonReader jsonReader = new JsonReader(responseBodyReader);
-                    jsonReader.beginObject();
-                    while(jsonReader.hasNext()) {
-                        String name = jsonReader.nextName();
-                        if (name.equals("info")) {
-                            readCharacters(jsonReader.nextString());
-                        } else if (name.equals("locations")) {
-                            readLocations(jsonReader.nextString());
-                        } else if (name.equals("episodes")) {
-                            readEpisodes(jsonReader.nextString());
-                        }
-                    }
-
-                } else {
-                    Toast toast1 = Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT);
-                    toast1.setGravity(Gravity.CENTER, , );
-                    toast1.show();
-                }
-
-            }
-        });
         */
+
+        adaptador = new adaptadorElement(this);
+        gridView.setAdapter(adaptador);
+        gridView.setOnItemClickListener(this);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
